@@ -79,18 +79,6 @@ function Player(){
   this.lean = 0.13
   this.mass = 0.5
   this.isGrabbable = false
-
-  this.dot = []
-
-  var i = 800
-  while(i){
-    var j = 60
-    while(j){
-      this.dot.push([i,j])
-      j--
-    }
-    i--
-  }
 }
 
 Player.prototype.draw = function(ctx){
@@ -113,13 +101,6 @@ Player.prototype.draw = function(ctx){
     if(!_.isEqual(current, this)){// && Maths.vectorMagnitude(vector) < 100){
       ctx.beginPath()
       farMiddle = Maths.pointAdd(Maths.pointSubtract(current, this), current)
-//    my_gradient = ctx.createLinearGradient(current.x, current.y, current.x, farMiddle.y);
-//      my_gradient = ctx.createRadialGradient(this.x, this.y, 10, this.x, this.y, 1200)
-
-//      my_gradient.addColorStop(0, "black");
-//      my_gradient.addColorStop(1, 'rgba(0,0,0,0)');
-//      ctx.fillStyle = my_gradient
-//      ctx.strokeStyle = 'rgba(125,125,0,1)'
       ctx.fillStyle = 'rgba(0,0,0,1)'
 
       myLight = {x:this.x,y:this.y - 1}
@@ -137,61 +118,18 @@ Player.prototype.draw = function(ctx){
       farRight = Maths.pointAdd(scaledDirectionVector, itsRight)
 
 
-//      ctx.moveTo(this.x, this.y)
-//      ctx.lineTo(itsLeft.x,itsLeft.y)
-//      ctx.lineTo(itsRight.x,itsRight.y)
-
       ctx.moveTo(itsLeft.x, itsLeft.y)
       ctx.lineTo(farLeft.x, farLeft.y)
-//      ctx.lineTo(farLeft.x, farLeft.y)
+
       ctx.lineTo(farRight.x, farRight.y)
       ctx.lineTo(itsRight.x, itsRight.y)
 
-//      ctx.moveTo(this.x,this.y)
-//      ctx.lineTo(current.leftX(),current.y)
-//      ctx.lineTo(current.rightX(),current.y)
-
       ctx.fill()
     }
-
-
-
-
-     ctx.fillStyle = "#FF00cc"
-
     ctx.fillStyle = "#FF00cc"
     ctx.fillRect(this.x-2,this.y-2,4,4)
     ctx.fillStyle = "#000000"
-
-
   }
-
-
-
-//  var my_gradient = ctx.createLinearGradient(this.x, this.y, this.x, 0);
-//  my_gradient.addColorStop(0, "black");
-//  my_gradient.addColorStop(1, "white");
-
-//  ctx.globalAlpha = 0.2;
-
-
-//  //ctx.beginPath();
-//  ctx.strokeStyle = 'rgba(0,0,0,0)'
-//  ctx.moveTo(0,0)
-//  ctx.lineTo(this.x,this.y)
-//  ctx.lineTo(300,0)
-//  ctx.globalAlpha = 0.5
-//  ctx.fillStyle = my_gradient;
-//  ctx.fill()
-//  //ctx.beginPath()
-//  ctx.globalAlpha = 1
-//  ctx.fillStyle = "#FFffff"
-//  //ctx.fillRect(0, 0, this.x, this.y);
-//
-//  ctx.fillStyle = 'rgba(125,125,125,1)'
-
-
-
 }
 
 Player.prototype.update = function(){
