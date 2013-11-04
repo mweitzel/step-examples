@@ -29,15 +29,6 @@ Maths.pointSubtract = function(p0, p1){
   }
 }
 
-//Maths.vectorFromPoints = function(p0, p1){
-//  return {
-//    x0:p0.x,
-//    y0:p0.y,
-//    x1:p1.x,
-//    y1:p1.y
-//  }
-//}
-
 Maths.crossProd = function(a, b){
   return ((a.x*b.y) - (a.y*b.x))
 }
@@ -45,10 +36,7 @@ Maths.crossProd = function(a, b){
 Physics = {}
 
 Physics.collide = function(collider, collidee){
-  a = Physics.intersectionOf(collider.intersectionVector(), collidee.intersectionVector())
-//  if(!!a)
-//    collidee.addForce(collider.mass * collider.dx, collidee.y - collider.y)
-  return a
+  return Physics.intersectionOf(collider.intersectionVector(), collidee.intersectionVector())
 }
 
 Physics.intersectionOf = function(vectorA, vectorB){
@@ -75,7 +63,6 @@ Physics.intersectionOf = function(vectorA, vectorB){
       x:vectorA.x0 + t*vectorA.x1,
       y:vectorA.y0 + t*vectorA.y1
     }  //p + t*r // or.. toReturn = q + r*s
-    // console.log(toReturn)
   }
   // p + t r = q + u s
 
@@ -104,14 +91,9 @@ function Player(){
     }
     i--
   }
-
-
 }
 
 Player.prototype.draw = function(ctx){
-
-
-
 
   my_gradient = ctx.createRadialGradient(this.x, this.y, 15, this.x, this.y, 250)
   my_gradient.addColorStop(0, 'rgba(0,0,0,0)');
@@ -270,7 +252,6 @@ Player.prototype.swingingUpdate = function(){
   if(this.y > 480 )
     this.y = 0
 
-
   if(this.isDodging()){
     //if(Input.getKey(keys.left) || Input.getKey(keys.right))
     this.dy = -4
@@ -280,7 +261,6 @@ Player.prototype.swingingUpdate = function(){
   else if(this.x < this.parent.leftX() || this.x > this.parent.rightX()){
     this.parent = {}
   }
-
 }
 
 Player.prototype.isDodging = function(){
@@ -298,7 +278,6 @@ Player.prototype.tryToGrabAnything = function(){
     this.parent = myFloor
 }
 
-
 Player.prototype.respondToInput = function(){
   if(Input.getKey(keys.right)){
     this.dx += 0.005 * Core.physicsTimeStep
@@ -310,14 +289,3 @@ Player.prototype.respondToInput = function(){
     this.dx *= 0.95
 
 }
-
-
-
-
-
-
-
-
-
-
-
