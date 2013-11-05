@@ -70,7 +70,93 @@ Physics.intersectionOf = function(vectorA, vectorB){
 
 }
 
+singleLightSource = {
+  draw:function(ctx){
+    my_gradient = ctx.createRadialGradient(this.globalX(), this.globalY(), 15, this.globalX(), this.globalY(), 250)
+    my_gradient.addColorStop(0, 'rgba(0,0,0,0)');
+    my_gradient.addColorStop(1, 'black');
+    ctx.fillStyle = my_gradient
+    ctx.fillRect(0,0,640,480)
+
+    for (var i=0; i < Core.entities.length - 1; i++) {
+      current = Core.entities[i]
+      vector = {
+        x0:this.globalX(),
+        y0:this.globalY(),
+        x1:current.x,
+        y1:current.y,
+      }
+
+      if(!_.isEqual(current, this)){// && Maths.vectorMagnitude(vector) < 100){
+        ctx.beginPath()
+        farMiddle = Maths.pointAdd(Maths.pointSubtract(current, this), current)
+        ctx.fillStyle = 'rgba(0,0,0,1)'
+
+        myLight = {x:this.globalX(),y:this.globalY() - 1}
+
+        itsLeft = {x:current.leftX(), y:current.y}
+        itsRight = {x:current.rightX(), y:current.y}
+
+
+        directionVector = Maths.pointSubtract(itsLeft, myLight)
+        scaledDirectionVector = Maths.scaledPoint(directionVector, 10000000)
+        farLeft = Maths.pointAdd(scaledDirectionVector, itsLeft)
+
+        directionVector = Maths.pointSubtract(itsRight, myLight)
+        scaledDirectionVector = Maths.scaledPoint(directionVector, 10000000)
+        farRight = Maths.pointAdd(scaledDirectionVector, itsRight)
+
+
+        ctx.moveTo(itsLeft.x, itsLeft.y)
+        ctx.lineTo(farLeft.x, farLeft.y)
+
+        ctx.lineTo(farRight.x, farRight.y)
+        ctx.lineTo(itsRight.x, itsRight.y)
+
+        ctx.fill()
+      }
+      ctx.fillStyle = "#FF00cc"
+    }
+  }
+}
+
+Core.root = (function(){
+  var public = new GameObject
+  public.globalY = public.localY
+  public.globalY = public.localY
+  return public
+})()
+
+function GameObject() {
+  return {
+    x:0,
+    y:0,
+    dx:0,
+    dy:0,
+    localX:function(){
+      return this.x
+    },
+    localY:function(){
+      return this.y
+    },
+    globalX:function(){
+      return this.parent.x + this.localX()
+    },
+    globalY:function(){
+      return this.parent.y + this.localY()
+    },
+    update:function(){},
+  }
+}
+
 function Player(){
+  this.children = []
+  var lightSource = new GameObject
+  _.extend(lightSource, singleLightSource)
+
+  Core.entities.push(lightSource)
+  lightSource.parent = this
+
   this.x = 200
   this.y = 200
   this.dx = 0
@@ -82,54 +168,8 @@ function Player(){
 }
 
 Player.prototype.draw = function(ctx){
-
-  my_gradient = ctx.createRadialGradient(this.x, this.y, 15, this.x, this.y, 250)
-  my_gradient.addColorStop(0, 'rgba(0,0,0,0)');
-  my_gradient.addColorStop(1, 'black');
-  ctx.fillStyle = my_gradient
-  ctx.fillRect(0,0,640,480)
-
-  for (var i=0; i < Core.entities.length; i++) {
-    current = Core.entities[i]
-    vector = {
-      x0:this.x,
-      y0:this.y,
-      x1:current.x,
-      y1:current.y,
-    }
-
-    if(!_.isEqual(current, this)){// && Maths.vectorMagnitude(vector) < 100){
-      ctx.beginPath()
-      farMiddle = Maths.pointAdd(Maths.pointSubtract(current, this), current)
-      ctx.fillStyle = 'rgba(0,0,0,1)'
-
-      myLight = {x:this.x,y:this.y - 1}
-
-      itsLeft = {x:current.leftX(), y:current.y}
-      itsRight = {x:current.rightX(), y:current.y}
-
-
-      directionVector = Maths.pointSubtract(itsLeft, myLight)
-      scaledDirectionVector = Maths.scaledPoint(directionVector, 10000000)
-      farLeft = Maths.pointAdd(scaledDirectionVector, itsLeft)
-
-      directionVector = Maths.pointSubtract(itsRight, myLight)
-      scaledDirectionVector = Maths.scaledPoint(directionVector, 10000000)
-      farRight = Maths.pointAdd(scaledDirectionVector, itsRight)
-
-
-      ctx.moveTo(itsLeft.x, itsLeft.y)
-      ctx.lineTo(farLeft.x, farLeft.y)
-
-      ctx.lineTo(farRight.x, farRight.y)
-      ctx.lineTo(itsRight.x, itsRight.y)
-
-      ctx.fill()
-    }
-    ctx.fillStyle = "#FF00cc"
     ctx.fillRect(this.x-2,this.y-2,4,4)
     ctx.fillStyle = "#000000"
-  }
 }
 
 Player.prototype.update = function(){
