@@ -43,7 +43,6 @@ singleLightSource = {
 
         ctx.fill()
       }
-      ctx.fillStyle = "#FF00cc"
     }
   }
 }

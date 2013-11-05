@@ -46,8 +46,8 @@ function Player(){
 }
 
 Player.prototype.draw = function(ctx){
-    ctx.fillRect(this.x-2,this.y-2,4,4)
-    ctx.fillStyle = "#000000"
+  ctx.fillStyle = "#FF00cc"
+  ctx.fillRect(this.x-2,this.y-2,4,4)
 }
 
 Player.prototype.update = function(){
